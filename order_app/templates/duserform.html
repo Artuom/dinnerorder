@@ -1,0 +1,21 @@
+{% block content %}
+<form method="post" action="{% url 'user' %}">
+    {% csrf_token %}
+    {% if status %}
+    {{ form.as_p }}
+    <p><input type="submit" value="OK"></p>
+    {% else %}
+        <a><h2>Your order can't be done!</h2></a>
+    <td>
+        <p><tr><th><label for="id_item">Item:</label></th><td><input id="id_item" maxlength="100" name="item" type="text" disabled/></td></tr></p>
+        <p><tr><th><label for="id_whom">Whom:</label></th><td><input id="id_whom" maxlength="100" name="whom" type="text" disabled/></td></tr></p>
+        <p><tr><th><label for="id_e_mail">E mail:</label></th><td><input id="id_e_mail" maxlength="254" name="e_mail" type="email" disabled/></td></tr></p>
+        <p><tr><th><label for="id_byr">Byr:</label></th><td><input id="id_byr" name="byr" type="number" disabled/></td></tr></p>
+        <p><tr><th><label for="id_byn">Byn:</label></th><td><input id="id_byn" name="byn" step="any" type="number" disabled/></td></tr></p>
+        <p><tr><th><label for="id_comment">Comment:</label></th><td><input id="id_comment" maxlength="200" name="comment" type="text" disabled/></td></tr></p>
+    </td>
+        <p><input type="submit" value="OK" disabled></p>
+    {% endif %}
+
+</form>
+{% endblock %}
