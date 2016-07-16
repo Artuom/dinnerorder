@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<table class="features-table">
+<tr>
+    <th>Item to buy</th>
+    <th>Whom</th>
+    <th>Paid in BYN</th>
+    <th>Paid in BYR</th>
+    <th>Comment</th>
+</tr>
+    {% for order in orders %}
+        <tr>
+<td class='grey'>{{ order.item }}</td><td class='grey'>{{ order.whom }}</td>
+<td class="grey">{{ order.byn }}</td><td class="grey">{{ order.byr }}</td>
+<td class="grey">{{ order.comment }}</td>
+<td><a href="{% url 'edit' pk=order.id%}">Edit</a></td><td><a href="{% url 'delete' order.id%}">Delete</a></td>
+        </tr>
+    {% endfor %}
+</table>
+    </br>
+{% endblock %}

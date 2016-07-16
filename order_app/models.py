@@ -7,11 +7,11 @@ from django.db import models
 
 class DUserModel(models.Model):
     item = models.CharField(max_length=100)
-    whom = models.CharField(max_length=100)
+    whom = models.CharField(max_length=100, blank=True)
     e_mail = models.EmailField()
-    byr = models.IntegerField(null=True)
-    byn = models.FloatField(null=True)
-    comment = models.CharField(max_length=200)
+    byr = models.IntegerField(blank=True, null=True)
+    byn = models.FloatField(null=True, blank=True)
+    comment = models.CharField(max_length=200, blank=True)
 
     def __unicode__(self):
         return self.item

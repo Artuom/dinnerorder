@@ -1,0 +1,6 @@
+<form method="post" action="{% url 'edit' pk%}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<p><input type="submit" value="OK"></p>
+</form>
