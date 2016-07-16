@@ -1,3 +1,4 @@
+import exceptions
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 import forms
@@ -45,9 +46,13 @@ def ordertable(request):
     summ_in_byn = 0
     itog = 0
     for order in orders:
-        summ_in_byn += order.byn
-        summ_in_byr += order.byr
-    itog = summ_in_byn + summ_in_byr / 10000
+        if order.byn is None:
+            order.byn = 0
+        elif order.byr is None:
+            order.byr = 0
+        summ_in_byn += float(order.byn)
+        summ_in_byr += int(order.byr)
+    itog = summ_in_byn + summ_in_byr // 10000.0
     return render(request, 'orderstable.html', {'orders':orders, 'byn':summ_in_byn, 'bur':summ_in_byr, 'itog': itog})
 
 
@@ -89,7 +94,7 @@ def edit(request, pk):
 
 def delete(request, pk):
     try:
-        TaskModel.objects.get(pk=pk).delete()
+        models.DUserModel.objects.get(pk=pk).delete()
     except exceptions.ObjectDoesNotExist:
-        return redirect('index')
-    return redirect('index')
+        return redirect('ordertable')
+    return redirect('ordertable')
