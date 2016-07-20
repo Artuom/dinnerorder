@@ -6,8 +6,11 @@ def send_mail_to_user(**kwargs):
     mail = kwargs['mail']
     item_to_buy = kwargs['item']
     comment = kwargs['comment']
-    text = 'Your order was changed by administrator. You new order is "{}"'.format(item_to_buy)
-    if len(comment) != 0:
+    if comment is not None and item_to_buy is not None:
+        text = 'Your order was changed by administrator. You new order is "{}"'.format(item_to_buy)
+    else:
+        text = 'Your order was deleted by administrator.'
+    if comment is not None and len(comment) != 0:
         text += ' with comment "{}"'.format(comment)
     server = smtplib.SMTP_SSL("smtp.yandex.ru:465")
     server.ehlo()

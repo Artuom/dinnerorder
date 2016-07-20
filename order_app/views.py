@@ -1,4 +1,5 @@
 import exceptions
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 import forms
@@ -38,7 +39,7 @@ def user(request):
             status = True
         else:
             status = False
-        status = 14  # zaplatka
+        status = True  # zaplatka
         return render(request, 'duserform.html', {'form': forms.DUserForm(), 'status': status})
 
 
@@ -59,6 +60,7 @@ def ordertable(request):
     return render(request, 'orderstable.html', {'orders':orders, 'byn':summ_in_byn, 'byr':summ_in_byr, 'itog': itog})
 
 
+@login_required(login_url='/accounts/login/')
 def edit(request, pk):
     if request.method == 'POST':
         form=forms.DUserForm(request.POST)
@@ -99,9 +101,14 @@ def edit(request, pk):
             }), 'pk': pk})
 
 
+@login_required(login_url='/accounts/login/')
 def delete(request, pk):
     try:
-        models.DUserModel.objects.get(pk=pk).delete()
-    except exceptions.ObjectDoesNotExist:
+        my_object = models.DUserModel.objects.get(pk=pk)
+        email = my_object.e_mail
+        # models.DUserModel.objects.get(pk=pk).delete()
+        my_object.delete()
+        send_mail_to_user(mail=email, item=None, comment=None)
+    except ObjectDoesNotExist:
         return redirect('ordertable')
     return redirect('ordertable')
