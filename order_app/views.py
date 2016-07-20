@@ -5,7 +5,7 @@ import forms
 import datetime
 import models
 from django.contrib.auth.decorators import login_required
-from utils import send_mail_test
+from utils import send_mail_to_user, send_mail_to_admin
 import copy
 
 # Create your views here.
@@ -28,6 +28,7 @@ def user(request):
             byn=data['byn']
             comment=data['comment']
             models.DUserModel.objects.create(item=item, whom=whom, e_mail=e_mail, byr=byr, byn=byn, comment=comment)
+            send_mail_to_admin(whom=whom, item=item, mail=e_mail)
             return render(request, 'confirmation.html', {})
         else:
             return render(request, 'duserform.html', {'form':form})
@@ -55,7 +56,7 @@ def ordertable(request):
         summ_in_byn += float(order.byn)
         summ_in_byr += int(order.byr)
     itog = summ_in_byn + summ_in_byr / 10000.0
-    return render(request, 'orderstable.html', {'orders':orders, 'byn':summ_in_byn, 'bur':summ_in_byr, 'itog': itog})
+    return render(request, 'orderstable.html', {'orders':orders, 'byn':summ_in_byn, 'byr':summ_in_byr, 'itog': itog})
 
 
 def edit(request, pk):
@@ -73,8 +74,7 @@ def edit(request, pk):
             my_object.comment = data['comment']
             my_object.save()
             if my_old_object.comment != my_object.comment or my_old_object.item != my_object.item:
-                send_mail_test(mail=my_object.e_mail, item=my_object.item, comment=my_object.comment)
-                print my_object.comment
+                send_mail_to_user(mail=my_object.e_mail, item=my_object.item, comment=my_object.comment)
             return redirect('ordertable')
         else:
             my_object = forms.DUserForm.objects.get(pk=pk)
