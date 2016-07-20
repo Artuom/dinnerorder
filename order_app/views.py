@@ -5,6 +5,8 @@ import forms
 import datetime
 import models
 from django.contrib.auth.decorators import login_required
+from utils import send_mail_test
+import copy
 
 # Create your views here.
 
@@ -52,7 +54,7 @@ def ordertable(request):
             order.byr = 0
         summ_in_byn += float(order.byn)
         summ_in_byr += int(order.byr)
-    itog = summ_in_byn + summ_in_byr // 10000.0
+    itog = summ_in_byn + summ_in_byr / 10000.0
     return render(request, 'orderstable.html', {'orders':orders, 'byn':summ_in_byn, 'bur':summ_in_byr, 'itog': itog})
 
 
@@ -62,12 +64,17 @@ def edit(request, pk):
         if form.is_valid():
             data=form.cleaned_data
             my_object = models.DUserModel.objects.get(pk=pk)
+            my_old_object = copy.copy(my_object)
             my_object.item = data['item']
             my_object.whom = data['whom']
             my_object.e_mail = data['e_mail']
             my_object.byn = data['byn']
             my_object.byr = data['byr']
+            my_object.comment = data['comment']
             my_object.save()
+            if my_old_object.comment != my_object.comment or my_old_object.item != my_object.item:
+                send_mail_test(mail=my_object.e_mail, item=my_object.item, comment=my_object.comment)
+                print my_object.comment
             return redirect('ordertable')
         else:
             my_object = forms.DUserForm.objects.get(pk=pk)
