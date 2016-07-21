@@ -102,7 +102,6 @@ def delete(request, pk):
     try:
         my_object = models.DUserModel.objects.get(pk=pk)
         email = my_object.e_mail
-        # models.DUserModel.objects.get(pk=pk).delete()
         my_object.delete()
         send_mail_to_user(mail=email, item=None, comment=None)
     except ObjectDoesNotExist:
