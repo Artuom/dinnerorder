@@ -26,7 +26,7 @@ def user(request):
             comment=data['comment']
             models.DUserModel.objects.create(item=item, whom=whom, e_mail=e_mail, byr=byr, byn=byn, comment=comment)
             send_mail_to_admin(whom=whom, item=item, mail=e_mail)
-            return render(request, 'confirmation.html', {'message':'Your order %s is processing'%item})
+            return render(request, 'confirmation.html', {'message': 'Your order %s is processing' % item})
         else:
             return render(request, 'duserform.html', {'form':form})
 
