@@ -51,7 +51,7 @@ def new_cur_time():
 
 
 class MyTests(TestCase):
-
+    @patch('order_app.views.cur_hour', new=new_cur_time)
     @patch('order_app.views.render', new=new_render)
     @patch('order_app.views.send_mail_to_admin', new=test_send_email)
     def test_order_creation(self):
