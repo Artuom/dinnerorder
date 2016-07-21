@@ -8,10 +8,10 @@ from django.db import models
 class DUserModel(models.Model):
     item = models.CharField(max_length=100)
     whom = models.CharField(max_length=100, blank=True)
-    e_mail = models.EmailField()
+    e_mail = models.EmailField(blank=True)
     byr = models.IntegerField(blank=True, null=True)
     byn = models.FloatField(null=True, blank=True)
-    comment = models.CharField(max_length=200, blank=True)
+    comment = models.CharField(max_length=200, blank=True, null=True)
 
     def __unicode__(self):
         return self.item

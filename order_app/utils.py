@@ -1,6 +1,6 @@
 # -*- coding=utf-8 -*-
 import smtplib
-
+import datetime
 
 def send_mail_to_user(**kwargs):
     mail = kwargs['mail']
@@ -43,3 +43,10 @@ def send_mail_to_admin(**kwargs):
         ])
     server.sendmail("djangotest14@yandex.ru", 'djangotest14@yandex.ru', message)
     server.quit()
+
+
+def cur_hour():
+    cur_date = datetime.datetime.now()
+    cur_time = cur_date.strftime("%d.%m.%Y %I:%M")
+    cur_hour = cur_date.hour
+    return cur_hour
